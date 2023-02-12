@@ -1,7 +1,7 @@
-import MapView from "../mapView/MapView";
+import MapViewComponent from "../mapView/MapView";
 
 function App() {
-    return <MapView></MapView>;
+    return <MapViewComponent></MapViewComponent>;
 }
 
 export default App;

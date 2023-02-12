@@ -7,7 +7,7 @@ import Map from "@arcgis/core/Map";
 import PopupTemplate from "@arcgis/core/PopupTemplate";
 import * as colorRendererCreator from "@arcgis/core/smartMapping/renderers/color";
 import * as colorSchemes from "@arcgis/core/smartMapping/symbology/color";
-import esriMapView from "@arcgis/core/views/MapView";
+import MapView from "@arcgis/core/views/MapView";
 import React from "react";
 
 import { dischargeRenderer } from "../../static/dischargeRenderer";
@@ -15,7 +15,7 @@ import geojson from "../../static/sampleThames.json";
 import { MarkerPopEffect } from "../../utils/MarkerAnimate";
 import { setContentInfo } from "../popup/PopUp";
 
-function MapView() {
+function MapViewComponent() {
     const mapDiv = React.useRef<HTMLInputElement>(null);
 
     const initMapView = async () => {
@@ -81,7 +81,7 @@ function MapView() {
                 layers: [layer, dischargePointsLayer]
             });
 
-            const view = new esriMapView({
+            const view = new MapView({
                 container: mapDiv.current,
                 map: map,
                 center: [-0.75, 51.6],
@@ -110,4 +110,4 @@ function MapView() {
     return <div className="mapDiv" ref={mapDiv}></div>;
 }
 
-export default MapView;
+export default MapViewComponent;
