@@ -4,6 +4,14 @@ import { defineConfig } from "vite";
 // https://vitejs.dev/config/
 export default defineConfig({
     base: "/SewageMap/",
+
+    build: {
+        rollupOptions: {
+            entryFileNames: "[name].js",
+            chunkFileNames: "[name].js"
+        } as any
+    },
+
     plugins: [
         // For all styled components:
         // create classnames from fileName and displayName in development
