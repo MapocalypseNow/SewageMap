@@ -84,8 +84,8 @@ function MapView() {
             const view = new esriMapView({
                 container: mapDiv.current,
                 map: map,
-                center: [-0.49, 51.4],
-                zoom: 15,
+                center: [-0.75, 51.6],
+                zoom: 8,
                 highlightOptions: {
                     fillOpacity: 0,
                     haloOpacity: 1
