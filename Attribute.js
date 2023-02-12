@@ -1,0 +1,1 @@
+import"./index.js";var s;(function(i){i[i.Multiply=1]="Multiply",i[i.Ignore=2]="Ignore",i[i.Replace=3]="Replace",i[i.Tint=4]="Tint"})(s||(s={}));class o{constructor(r,e,l=!1,c=e){this.data=r,this.size=e,this.exclusive=l,this.stride=c}}export{s as r,o as s};

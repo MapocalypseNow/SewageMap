@@ -1,1 +1,1 @@
-const u=.7111111111111111,o=1/Math.LN2;function c(t,n){return(t%=n)>=0?t:t+n}function e(t){return c(t*u,256)}function f(t){return Math.log(t)*o}function i(t,n,r){return t>=n&&t<=r||t>=r&&t<=n}export{e as M,f as P,i as g};
+const r=.7111111111111111,u=1/Math.LN2;function o(t,n){return(t%=n)>=0?t:t+n}function c(t){return o(t*r,256)}function e(t){return Math.log(t)*u}export{c,e};

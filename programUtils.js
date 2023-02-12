@@ -1,7 +1,7 @@
-import{v as h}from"./index.js";import{h as u}from"./ProgramTemplate.js";class a{constructor(){this._outer=new Map}clear(){this._outer.clear()}get empty(){return this._outer.size===0}get(e,o){var t;return(t=this._outer.get(e))==null?void 0:t.get(o)}set(e,o,t){const s=this._outer.get(e);s?s.set(o,t):this._outer.set(e,new Map([[o,t]]))}delete(e,o){const t=this._outer.get(e);t&&(t.delete(o),t.size===0&&this._outer.delete(e))}forEach(e){this._outer.forEach((o,t)=>e(o,t))}}class d{constructor(e){this._rctx=e,this._store=new a}dispose(){this._store.forEach(e=>e.forEach(o=>o.dispose())),this._store.clear()}acquire(e,o,t,s){const r=this._store.get(e,o);if(h(r))return r.ref(),r;const n=new u(this._rctx,e,o,t,s);return n.ref(),this._store.set(e,o,n),n}get test(){let e=0;return this._store.forEach(o=>o.forEach(t=>e+=t.hasGLName?2:1)),{cachedWebGLObjects:e}}}function l(i){const{options:e,value:o}=i;return typeof e[o]=="number"}function $(i){let e="";for(const o in i){const t=i[o];if(typeof t=="boolean")t&&(e+=`#define ${o}
-`);else if(typeof t=="number")e+=`#define ${o} ${t.toFixed()}
-`;else if(typeof t=="object")if(l(t)){const{value:s,options:r,namespace:n}=t,c=n?`${n}_`:"";for(const f in r)e+=`#define ${c}${f} ${r[f].toFixed()}
-`;e+=`#define ${o} ${c}${s}
-`}else{const s=t.options;let r=0;for(const n in s)e+=`#define ${s[n]} ${(r++).toFixed()}
-`;e+=`#define ${o} ${s[t.value]}
-`}}return e}export{$ as n,d as s};
+import{r as a}from"./index.js";import{t as h}from"./NestedMap.js";import{h as $}from"./ProgramTemplate.js";class m{constructor(e){this._rctx=e,this._store=new h}dispose(){this._store.forEach(e=>e.forEach(t=>t.dispose())),this._store.clear()}acquire(e,t,o,s){const n=this._store.get(e,t);if(a(n))return n.ref(),n;const r=new $(this._rctx,e,t,o,s);return r.ref(),this._store.set(e,t,r),r}get test(){let e=0;return this._store.forEach(t=>t.forEach(o=>e+=o.hasGLName?2:1)),{cachedWebGLObjects:e}}}function p(i){const{options:e,value:t}=i;return typeof e[t]=="number"}function _(i){let e="";for(const t in i){const o=i[t];if(typeof o=="boolean")o&&(e+=`#define ${t}
+`);else if(typeof o=="number")e+=`#define ${t} ${o.toFixed()}
+`;else if(typeof o=="object")if(p(o)){const{value:s,options:n,namespace:r}=o,f=r?`${r}_`:"";for(const c in n)e+=`#define ${f}${c} ${n[c].toFixed()}
+`;e+=`#define ${t} ${f}${s}
+`}else{const s=o.options;let n=0;for(const r in s)e+=`#define ${s[r]} ${(n++).toFixed()}
+`;e+=`#define ${t} ${s[o.value]}
+`}}return e}export{_ as n,m as s};

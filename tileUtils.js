@@ -1,1 +1,1 @@
-import"./index.js";function d(c,t,e,n){const o=c.clone(),r=1<<o.level,l=o.col+t,w=o.row+e;return n&&l<0?(o.col=l+r,o.world-=1):l>=r?(o.col=l-r,o.world+=1):o.col=l,o.row=w,o}export{d as l};
+function d(r,e,n,t){const o=r.clone(),c=1<<o.level,l=o.col+e,w=o.row+n;return t&&l<0?(o.col=l+c,o.world-=1):l>=c?(o.col=l-c,o.world+=1):o.col=l,o.row=w,o}export{d as o};
