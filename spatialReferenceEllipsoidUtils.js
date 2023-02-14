@@ -1,1 +1,0 @@
-import{f as a,gU as o,gV as r,gW as t,gX as c,gN as w,cq as n,gO as m}from"./index.js";const i=new a(o),g=new a(r),f=new a(t);new a(c);function u(s){return s&&(w(s)||n(s,g))?g:s&&(m(s)||n(s,f))?f:i}export{u as c};

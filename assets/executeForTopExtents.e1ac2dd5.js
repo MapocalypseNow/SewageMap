@@ -1,0 +1,1 @@
+import{K as r,jB as m,w as c}from"./vendor.f8a4aecc.js";import{p as f}from"./queryTopFeatures.ee97b979.js";async function u(o,a,e){const n=r(o),t=await f(n,m.from(a),{...e});return{count:t.data.count,extent:c.fromJSON(t.data.extent)}}export{u as executeForTopExtents};
