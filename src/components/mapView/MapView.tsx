@@ -46,6 +46,7 @@ async function initialiseMapview(mapElement: HTMLDivElement): Promise<void> {
         includeDefaultSources: false,
         sources: [
             new LocatorSearchSource({
+                placeholder: "Find address or place",
                 url: "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer",
                 countryCode: "GB",
                 suggestionsEnabled: true,
@@ -53,18 +54,6 @@ async function initialiseMapview(mapElement: HTMLDivElement): Promise<void> {
             })
         ]
     });
-
-    console.log(searchWidget.viewModel);
-
-    // searchWidget.viewModel.activeSource.filter = {
-    //     geometry: new Extent({
-    //         xmin: -1060214.3251,
-    //         ymin: -1540060.9658000004,
-    //         xmax: 1867129.296,
-    //         ymax: 2227462.0467000017,
-    //         spatialReference: { wkid: 27700 }
-    //     })
-    // };
 
     view.ui.add(searchWidget, { position: "top-right" });
 
