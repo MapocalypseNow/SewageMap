@@ -1,1 +1,0 @@
-import{$ as r,f as o}from"./unitUtils-bc71b997.js";const c=96;function d(t,n){const e=n||t.extent,i=t.width,f=r(e&&e.spatialReference);return e&&i?e.width/i*f*o*c:0}function p(t,n){return t/(r(n)*o*c)}function s(t,n){return t*(r(n)*o*c)}export{s as c,d as i,p as r};

@@ -1,1 +1,0 @@
-import"./ensureType-9613b5f0.js";import"./Extent-d21a2637.js";import"./string-cc430a78.js";import"./mathUtils-daf59e84.js";import"./Query-ca5b0d4c.js";import"./TileKey-75a33c7e.js";function s(l,c,i,p){const o=l.clone(),t=1<<o.level,r=o.col+c,m=o.row+i;return p&&r<0?(o.col=r+t,o.world-=1):r>=t?(o.col=r-t,o.world+=1):o.col=r,o.row=m,o}export{s as l};
