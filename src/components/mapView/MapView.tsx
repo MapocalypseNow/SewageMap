@@ -4,6 +4,7 @@ import Map from "@arcgis/core/Map";
 import * as symbolUtils from "@arcgis/core/symbols/support/symbolUtils";
 import esriMapView from "@arcgis/core/views/MapView";
 import Search from "@arcgis/core/widgets/Search";
+import LocatorSearchSource from "@arcgis/core/widgets/Search/LocatorSearchSource";
 import React from "react";
 import styled from "styled-components";
 
@@ -28,6 +29,9 @@ async function initialiseMapview(mapElement: HTMLDivElement): Promise<void> {
 
     const view = new esriMapView({
         container: mapElement,
+        constraints: {
+            minZoom: 6
+        },
         map: map,
         center: [-0.75, 51.6],
         zoom: 8,
@@ -37,12 +41,32 @@ async function initialiseMapview(mapElement: HTMLDivElement): Promise<void> {
         }
     });
 
-    view.ui.add(
-        new Search({
-            view: view
-        }),
-        { position: "top-right" }
-    );
+    const searchWidget = new Search({
+        view: view,
+        includeDefaultSources: false,
+        sources: [
+            new LocatorSearchSource({
+                url: "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer",
+                countryCode: "GB",
+                suggestionsEnabled: true,
+                minSuggestCharacters: 2
+            })
+        ]
+    });
+
+    console.log(searchWidget.viewModel);
+
+    // searchWidget.viewModel.activeSource.filter = {
+    //     geometry: new Extent({
+    //         xmin: -1060214.3251,
+    //         ymin: -1540060.9658000004,
+    //         xmax: 1867129.296,
+    //         ymax: 2227462.0467000017,
+    //         spatialReference: { wkid: 27700 }
+    //     })
+    // };
+
+    view.ui.add(searchWidget, { position: "top-right" });
 
     const MarkerPopEffectManager = new MarkerPopEffect({
         view,
