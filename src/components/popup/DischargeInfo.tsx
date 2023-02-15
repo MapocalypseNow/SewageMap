@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 
 import { AlertStatus, DischargeTimes } from "./PopUp";
@@ -29,12 +30,14 @@ function generateDischargeText(alertStatus: AlertStatus, dischargeStart: number 
     }
 }
 
-function timeInterval(start: number, end: number): string {
+function timeInterval(start: number, end: number, includeSeconds = false): string {
     const difference = end - start;
     const hours = Math.floor(difference / (1000 * 60 * 60));
     const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-
-    return `${hours > 0 ? `${hours} hours ` : ""}${minutes < 10 ? "0" + minutes : minutes} mins`;
+    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+    return `${hours > 0 ? `${hours} hours ` : ""}${minutes < 10 ? "0" + minutes : minutes} mins ${
+        includeSeconds ? `${seconds < 10 ? "0" + seconds : seconds} sec` : ""
+    } `;
 }
 
 function unixToAmPm(timestamp: number): string {
@@ -100,6 +103,22 @@ function ActiveBadge() {
     );
 }
 
+function LiveDischargeTime({ start }: { start: number }) {
+    const [currentUTCTime, setCurrentUTCTime] = React.useState(Date.now());
+
+    function refreshClock() {
+        setCurrentUTCTime(Date.now());
+    }
+    React.useEffect(() => {
+        const timerId = setInterval(refreshClock, 1000);
+        return function cleanup() {
+            clearInterval(timerId);
+        };
+    }, []);
+
+    return <>{timeInterval(start, currentUTCTime, true)}</>;
+}
+
 export function DischargeInfo({ alertStatus, discharge }: DischargeInfoType) {
     return (
         <Container>
@@ -127,7 +146,11 @@ export function DischargeInfo({ alertStatus, discharge }: DischargeInfoType) {
                         `}
                     >
                         <RowLabel>DURATION</RowLabel>
-                        {timeInterval(discharge.start, discharge.end ?? Date.now())}
+                        {discharge.end ? (
+                            timeInterval(discharge.start, discharge.end)
+                        ) : (
+                            <LiveDischargeTime start={discharge.start}></LiveDischargeTime>
+                        )}
                     </p>
                 </>
             )}
