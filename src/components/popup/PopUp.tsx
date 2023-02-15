@@ -28,7 +28,15 @@ function getRenderProps(feature: __esri.Graphic): DischargePopupType {
     const dischargeEnd = attributes["MostRecentDischargeAlertStop"];
     const feeds = attributes["ReceivingWaterCourse"];
     const location = attributes["LocationName"];
-
+    console.log({
+        alertStatus: getAlertStatus(alertPast48Hours, alertStatusField),
+        discharge: {
+            start: dischargeStart,
+            end: dischargeEnd
+        },
+        feeds,
+        location
+    });
     return {
         alertStatus: getAlertStatus(alertPast48Hours, alertStatusField),
         discharge: {

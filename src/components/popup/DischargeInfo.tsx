@@ -19,10 +19,13 @@ type DischargeInfoType = {
 function generateDischargeText(alertStatus: AlertStatus, dischargeStart: number | null) {
     switch (alertStatus) {
         case "Discharging":
-            return "Discharging Now";
+            return "Discharging Now 🤮";
         case "Recent Discharge":
+            return "Discharge in last 48 hours 🤢";
         case "Not Discharging":
-            return dischargeStart ? "Last Discharge" : "No Discharges Since 1st April 2022";
+            return dischargeStart
+                ? "Historic Discharge Event 🤕"
+                : "No Discharges Since 1st April 2022";
     }
 }
 
@@ -47,17 +50,67 @@ function unixToAmPm(timestamp: number): string {
     return `${hours}:${outMinutes} ${ampm}`;
 }
 
+const PulseDot = styled.span`
+    border-radius: 100%;
+    background-color: hsl(10, 90%, 50%);
+    width: 4px;
+    display: inline-block;
+    height: 4px;
+    margin-bottom: 2px;
+    vertical-align: middle;
+    margin-right: 4px;
+
+    box-shadow: 0 0 0 0 hsl(10, 90%, 50%);
+    transform: scale(1);
+    animation: pulse 2s infinite;
+
+    @keyframes pulse {
+        0% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 hsl(9.95633187772926, 89.80392156862744%, 50%, 0.7);
+        }
+
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 5px hsl(10, 90%, 50%, 0);
+        }
+
+        100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 hsl(10, 90%, 50%, 0);
+        }
+    }
+`;
+
+function ActiveBadge() {
+    return (
+        <span
+            css={`
+                border-radius: 99999px;
+                background-color: hsl(0, 100%, 97%);
+                padding: 0px 8px;
+                border: hsl(0, 100%, 90%) solid 1px;
+                color: hsl(10, 90%, 50%);
+                font-size: 0.7rem;
+            `}
+        >
+            <PulseDot></PulseDot>
+            ACTIVE
+        </span>
+    );
+}
+
 export function DischargeInfo({ alertStatus, discharge }: DischargeInfoType) {
     return (
         <Container>
-            <h2
+            <p
                 css={`
-                    font-size: 1.2rem;
+                    font-size: 1.1rem;
                     margin-bottom: 4px;
                 `}
             >
                 {generateDischargeText(alertStatus, discharge.start)}
-            </h2>
+            </p>
             {discharge.start != null && (
                 <>
                     <p
@@ -66,7 +119,7 @@ export function DischargeInfo({ alertStatus, discharge }: DischargeInfoType) {
                         `}
                     >
                         <RowLabel>TIME PERIOD</RowLabel> {unixToAmPm(discharge.start)} -{" "}
-                        {discharge.end ? unixToAmPm(discharge.end) : "ongoing"}
+                        {discharge.end ? unixToAmPm(discharge.end) : <ActiveBadge></ActiveBadge>}
                     </p>
                     <p
                         css={`

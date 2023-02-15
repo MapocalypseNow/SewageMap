@@ -41,7 +41,7 @@ export class MarkerPopEffect {
 
     private _activeAnimatedGraphic: IAnimatedGraphic | null = null;
 
-    private set activeAnimatedGraphic(hitGraphic: __esri.Graphic | null) {
+    public set activeAnimatedGraphic(hitGraphic: __esri.Graphic | null) {
         if (hitGraphic === null) {
             // cancel the current active AnimatedGraphic if present.
             this._activeAnimatedGraphic && this.abortAnimation(this._activeAnimatedGraphic);
@@ -109,7 +109,10 @@ export class MarkerPopEffect {
                 animatedGraphic.animationManager.animatePictureMarkerSize(
                     { height: startHeight, width: startWidth },
                     { height: endHeight, width: endWidth },
-                    this.animationSpeed
+                    this.animationSpeed,
+                    () => {
+                        this.mapView.graphics.remove(animatedGraphic);
+                    }
                 );
             }
         }
