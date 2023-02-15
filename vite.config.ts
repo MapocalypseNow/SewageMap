@@ -1,18 +1,16 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+import { splitVendorChunkPlugin } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
     base: "/SewageMap/",
 
     build: {
-        rollupOptions: {
-            entryFileNames: "[name].js",
-            chunkFileNames: "[name].js"
-        } as any
+        chunkSizeWarningLimit: 1500
     },
-
     plugins: [
+        splitVendorChunkPlugin(),
         // For all styled components:
         // create classnames from fileName and displayName in development
         react({
