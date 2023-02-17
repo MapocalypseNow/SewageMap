@@ -1,6 +1,10 @@
 import Basemap from "@arcgis/core/Basemap";
+import esriConfig from "@arcgis/core/config";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
+import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import Map from "@arcgis/core/Map";
+import * as geoprocessor from "@arcgis/core/rest/geoprocessor";
+import Query from "@arcgis/core/rest/support/Query";
 import * as symbolUtils from "@arcgis/core/symbols/support/symbolUtils";
 import esriMapView from "@arcgis/core/views/MapView";
 import Search from "@arcgis/core/widgets/Search";
@@ -21,7 +25,8 @@ const MapViewContainer = styled.div`
 
 async function initialiseMapview(mapElement: HTMLDivElement): Promise<void> {
     const dischargeSourceLayer = getDischargePointLayer();
-
+    esriConfig.apiKey =
+        "AAPK27fcdc2310f14ea59b10f7a3f0b992f6pr7xdq6MOr38g1z2ybBfXE8JnBesHZgo_c2XF5GpocoAc9CpjY-Px6uSRly9uLmC";
     const map = new Map({
         basemap: new Basemap({ portalItem: { id: "a8c045aa74d643cc9e2fa2702cc4cb45" } }),
         layers: [dischargeSourceLayer]
@@ -78,7 +83,46 @@ async function initialiseMapview(mapElement: HTMLDivElement): Promise<void> {
         }
     );
 
-    map.add(await getRiverDischargeLayer(), 0);
+    // map.add(await getRiverDischargeLayer(), 0);
+
+    const discharginFeaturesQuery = new Query({
+        where: "AlertPast48Hours = 'true'",
+        returnGeometry: true,
+        outFields: ["*"]
+    });
+    const result = await dischargeSourceLayer.queryFeatures(discharginFeaturesQuery);
+
+    if (result.features?.length > 0) {
+        const gpJob = await geoprocessor.submitJob(
+            "https://hydro.arcgis.com/arcgis/rest/services/Tools/Hydrology/GPServer/TraceDownstream",
+            {
+                PointIDField: "PermitNumber",
+                f: "json",
+                InputPoints: JSON.stringify(result.toJSON())
+            }
+        );
+        await gpJob.waitForJobCompletion();
+        const { value } = await gpJob.fetchResultData("OutputTraceLine");
+        const OutputTraceLine = value as __esri.FeatureSet;
+        if (OutputTraceLine) {
+            const layer = new FeatureLayer({
+                source: OutputTraceLine.features, // array of graphics objects
+                objectIdField: "OBJECTID",
+                fields: OutputTraceLine.fields,
+                renderer: {
+                    type: "simple", // autocasts as new SimpleRenderer()
+                    symbol: {
+                        type: "simple-line", // autocasts as new SimpleLineSymbol()
+                        color: "#733f2e",
+                        width: "8px",
+                        style: "solid"
+                    }
+                } as any
+            });
+
+            map.add(layer, 0);
+        }
+    }
 }
 
 function MapView() {

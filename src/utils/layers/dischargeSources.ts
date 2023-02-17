@@ -6,13 +6,12 @@ import UniqueValueRenderer from "@arcgis/core/renderers/UniqueValueRenderer";
 import PictureMarkerSymbol from "@arcgis/core/symbols/PictureMarkerSymbol";
 
 import { setContentInfo } from "../../components/popup/PopUp";
+import dischargeRendererValueExpression from "../../static/dischargeSourceRendererArcade.js?raw";
 import recentDischargeUrl from "../../static/error-warning-fill.png";
 import pooUrl from "../../static/poo.png";
 import notDischargingUrl from "../../static/shield-check-fill.png";
 
-const valueExpression =
-    'var statuses = ["Not Discharging", "Recent Discharge", "Discharging", "Offline"];\r\nvar index = 3;\r\nif (Boolean($feature.AlertPast48Hours) == true && Lower(Trim($feature.AlertStatus)) != "discharging"  && Lower(Trim($feature.AlertStatus)) != "offline")\r\n{\r\n    index = 1;\r\n} else if ( Lower(Trim($feature.AlertStatus)) == "not discharging" )\r\n{\r\n    index = 0;\r\n} else if ( $feature.AlertStatus == null || IsEmpty($feature.AlertStatus) )\r\n{\r\n    index = 3;\r\n} else if ( Lower(Trim($feature.AlertStatus)) == "discharging")\r\n{\r\n    index = 2;\r\n} else if ( Lower(Trim($feature.AlertStatus)) == "offline")\r\n{\r\n    index = 3;\r\n} \r\n\r\nreturn statuses[index];';
-
+const valueExpression = dischargeRendererValueExpression;
 const uniqueValueGroups = [
     new UniqueValueGroup({
         classes: [
@@ -29,8 +28,8 @@ const uniqueValueGroups = [
                 label: "Not Discharging",
                 symbol: new PictureMarkerSymbol({
                     url: notDischargingUrl,
-                    width: "20",
-                    height: "20"
+                    width: "16",
+                    height: "16"
                 }),
                 values: "Not Discharging"
             }),
@@ -63,6 +62,7 @@ export function getDischargePointLayer() {
         outFields: ["*"],
         renderer: dischargeRenderer,
         popupTemplate: template,
+        effect: `drop-shadow(0.3px 0.5px 0.7px #a0a0925c) drop-shadow(0.4px 0.8px 1px #a0a0925c) drop-shadow( 1px 2px 2.5px #a0a0925c)`,
         orderBy: [
             {
                 field: "MostRecentDischargeAlertStart",
